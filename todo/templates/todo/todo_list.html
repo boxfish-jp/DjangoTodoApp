@@ -1,0 +1,61 @@
+{% extends 'todo/base.html' %}
+
+{% block header %}
+    <h1>リマインダー</h1>
+    <a class="btn btn-primary" href="{% url 'create' %}">予定登録</a>
+    <a class="btn btn-danger" href="{% url 'create' %}">メアド登録</a>
+    <!--========== ここから以下を追加 =========== -->
+    {% if user.is_authenticated %}
+    <!--========== ここまでを追加 =============== -->
+    
+    <li>
+        
+        <!--========== ここから以下を修正 =============== -->
+        <a class="nav-link">ユーザー名：{{ user.username }}</a>
+        <a class="nav-link">メアド：{{ user.email }}</a>
+        <!--========== ここまでを修正 =============== -->
+    
+    </li>     
+    <li>
+        <a class="nav-link" href="{% url 'accounts:logout' %}">
+            <i class="fa fa-fw fa-sign-out"></i>ログアウト</a>
+    </li>
+    
+    <!--========== ここから以下を追加 =========== -->
+    {% endif %}
+    <!--========== ここまでを追加 =============== -->
+    
+
+</ul>
+</div>
+{% endblock header %}
+
+{% block content %}
+<div class="shadow-lg rounded">
+    <table class="table table-danger">
+        <thead>
+            <tr>
+            <th scope="col">タイトル</th>
+            <th scope="col">締切日</th>
+            <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for task in tasks %}
+        {% if request.user.email == task.mail %}
+        <tr>
+            <td>{{ task.title }}</td>
+            <td>{{ task.deadline }}</td>
+            <td>
+                <a href="{% url 'detail' task.pk %}">詳細</a>
+                <a href="{% url 'update' task.pk %}">編集</a>
+                <a href="{% url 'delete' task.pk %}">削除</a>
+            </td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock content %}
