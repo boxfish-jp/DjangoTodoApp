@@ -30,6 +30,6 @@ def send(title,description,mail,frequency):
 
 def start():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(update, 'interval', seconds=30, start_date=None)
+    scheduler.add_job(update, 'interval', hours=1, start_date=None)
     scheduler.start()
 
