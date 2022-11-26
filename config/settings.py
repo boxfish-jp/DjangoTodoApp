@@ -12,21 +12,18 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+#BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-w$4r3-4hcs-&7nc*oyb5b8wsa-paw43vswn@u5=yml=m#ikfu='
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = []
+
 
 
 # Application definition
@@ -41,6 +38,7 @@ INSTALLED_APPS = [
     'todo.apps.TodoConfig',  #追加
     'bootstrap4',   #追加
     'widget_tweaks',    #追加
+    'whitenoise.middleware.WhiteNoiseMiddleware', #追加
 ]
 
 MIDDLEWARE = [
@@ -79,8 +77,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'name',
+        'USER': 'user',
+        'PASSWORD': '',
+        'HOST': 'host',
+        'PORT': '',
     }
 }
 
@@ -119,7 +121,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -137,11 +139,21 @@ LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = '/list'
 LOGOUT_REDIRECT_URL='/login'
 
+ALLOWED_HOSTS = ['*'] #こちらでもokです
+
 DEBUG = False
+#追加
+try:
+    from .local_settings import *
+except ImportError:
+    pass
 
 if not DEBUG:
     # Heroku settings
-
+    
+    # SECURITY WARNING: keep the secret key used in production secret!
+    SECRET_KEY = os.environ['django-insecure-w$4r3-4hcs-&7nc*oyb5b8wsa-paw43vswn@u5=yml=m#ikfu=']
+    
     # staticの設定
     import os
     import django_heroku
