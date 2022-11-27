@@ -3,7 +3,6 @@
 {% block header %}
     <h1>リマインダー</h1>
     <a class="btn btn-primary" href="{% url 'create' %}">予定登録</a>
-    <a class="btn btn-danger" href="{% url 'create' %}">メアド登録</a>
     <!--========== ここから以下を追加 =========== -->
     {% if user.is_authenticated %}
     <!--========== ここまでを追加 =============== -->
